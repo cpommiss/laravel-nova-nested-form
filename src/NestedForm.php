@@ -162,6 +162,13 @@ class NestedForm extends Field
     public $min = 0;
 
     /**
+     * Set whether text prefixes should display before panel titles (i.e., "Update Related ...")
+     *
+     * @var bool
+     */
+    public $showPrefix = true;
+    
+    /**
      * Condition to display the nested form.
      */
     public $displayIfCallback;
@@ -181,7 +188,7 @@ class NestedForm extends Field
      * @param  string|null  $resource
      * @return void
      */
-    public function __construct(string $name, $attribute = null, $resource = null)
+    public function __construct(string $name, $attribute = null, $resource = null, $showPrefixes = true)
     {
         parent::__construct($name, $attribute);
         $resource = $resource ?? ResourceRelationshipGuesser::guessResource($name);
@@ -191,6 +198,7 @@ class NestedForm extends Field
         $this->viaRelationship = $this->attribute;
         $this->singularLabel = Str::singular($this->name);
         $this->pluralLabel = Str::plural($this->name);
+        $this->showPrefix = $showPrefixes;
         $this->keyName = (new $this->resourceClass::$model)->getKeyName();
         $this->viaResource = app(NovaRequest::class)->route('resource');
         $this->returnContext = $this;
